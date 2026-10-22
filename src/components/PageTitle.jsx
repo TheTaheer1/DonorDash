@@ -1,0 +1,1 @@
+export function PageTitle({ eyebrow, title, copy, action }) { return <div className="page-title"><div><div className="eyebrow">{eyebrow}</div><h1>{title}</h1>{copy && <p>{copy}</p>}</div>{action}</div>; }

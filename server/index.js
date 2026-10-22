@@ -11,7 +11,7 @@ import helmet from 'helmet';
 import cron from 'node-cron';
 import { z } from 'zod';
 import { config } from './config.js';
-import { BloodRequest, DonorProfile, DonorResponse, User } from './models.js';
+import { BloodRequest, DonorProfile, DonorResponse, User } from './models/index.js';
 import { canReceiveFrom, findEligibleDonors } from './logic.js';
 import { notifyDonor } from './mailer.js';
 

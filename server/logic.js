@@ -1,4 +1,4 @@
-import { DonorProfile } from './models.js';
+import { DonorProfile } from './models/DonorProfile.js';
 import { config } from './config.js';
 
 export const canReceiveFrom = { 'O-': ['O-'], 'O+': ['O+', 'O-'], 'A-': ['A-', 'O-'], 'A+': ['A+', 'A-', 'O+', 'O-'], 'B-': ['B-', 'O-'], 'B+': ['B+', 'B-', 'O+', 'O-'], 'AB-': ['AB-', 'A-', 'B-', 'O-'], 'AB+': ['O-', 'O+', 'A-', 'A+', 'B-', 'B+', 'AB-', 'AB+'] };

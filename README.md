@@ -10,6 +10,21 @@ DonorDash is a MERN emergency blood donor matching application. It helps a reque
 - Authentication: JWT, HTTP-only cookies, bcrypt, CORS
 - Deployment: Vercel frontend, Render backend
 
+## Project structure
+
+```text
+src/
+  components/              shared UI primitives
+  features/requests/       blood-group rules and request data
+  pages/                   overview, requests, create request, profile
+  App.jsx                  routing, orchestration, API synchronization
+server/
+  models/                  one Mongoose model per domain entity
+  logic.js                 eligibility and matching service
+  mailer.js                notification service
+  index.js                 API and Socket.IO composition
+```
+
 ## What is implemented
 
 - React + Tailwind CSS frontend with a responsive dashboard, forms, validation messages, empty states, and mobile layout.
