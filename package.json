@@ -1,0 +1,41 @@
+{
+  "name": "donordash",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"vite\" \"npm run server\"",
+    "server": "node server/index.js",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "@reduxjs/toolkit": "latest",
+    "axios": "latest",
+    "autoprefixer": "latest",
+    "bcryptjs": "latest",
+    "concurrently": "latest",
+    "cookie-parser": "latest",
+    "cors": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "express-rate-limit": "latest",
+    "helmet": "latest",
+    "jsonwebtoken": "latest",
+    "mongoose": "latest",
+    "node-cron": "latest",
+    "nodemailer": "latest",
+    "postcss": "latest",
+    "vite": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-redux": "latest",
+    "react-router-dom": "latest",
+    "socket.io": "latest",
+    "socket.io-client": "latest",
+    "tailwindcss": "^3.4.17",
+    "zod": "latest"
+  },
+  "devDependencies": {}
+}
