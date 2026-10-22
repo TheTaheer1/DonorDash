@@ -13,11 +13,14 @@ DonorDash is a MERN emergency blood donor matching application. It helps a reque
 ## Project structure
 
 ```text
-src/
-  components/              shared UI primitives
-  features/requests/       blood-group rules and request data
-  pages/                   overview, requests, create request, profile
-  App.jsx                  routing, orchestration, API synchronization
+client/
+  index.html               Vite entry document
+  vite.config.js           Vite + React configuration
+  src/
+    components/            shared UI primitives
+    features/requests/     blood-group rules and request data
+    pages/                 overview, requests, create request, profile
+    App.jsx                routing, orchestration, API synchronization
 server/
   models/                  one Mongoose model per domain entity
   logic.js                 eligibility and matching service
