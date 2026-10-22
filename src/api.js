@@ -1,0 +1,13 @@
+import axios from 'axios';
+
+const client = axios.create({ baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000', withCredentials: true, headers: { 'Content-Type': 'application/json' } });
+const request = async (path, options = {}) => (await client({ url: path, ...options })).data;
+export const api = {
+  me: () => request('/api/auth/me'),
+  demoLogin: () => request('/api/auth/demo', { method: 'POST' }),
+  profile: () => request('/api/donors/me'),
+  saveProfile: profile => request('/api/donors/me', { method: 'PUT', data: { bloodGroup: profile.group, gender: profile.gender, dob: profile.dob, city: profile.city, lastDonatedAt: profile.last || null, isAvailable: profile.available } }),
+  requests: () => request('/api/requests/mine'),
+  createRequest: form => request('/api/requests', { method: 'POST', data: { bloodGroup: form.group, unitsNeeded: form.units, hospital: form.hospital, city: form.city, deadline: form.deadline } }),
+  respond: (id, status) => request(`/api/requests/${id}/respond`, { method: 'POST', data: { status: status === 'accept' ? 'ACCEPTED' : 'DECLINED' } })
+};
