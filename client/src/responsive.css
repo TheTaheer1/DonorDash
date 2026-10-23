@@ -25,6 +25,7 @@
 .notification-empty span { font-size: 10px; }
 .mobile-header-brand, .mobile-profile-name { display: none; }
 .mobile-settings-button { display: none; border: 0; background: none; color: #747077; cursor: pointer; padding: 5px; }
+.mobile-settings-button svg, .settings-button svg { color: var(--red); width: 20px; height: 20px; }
 .profile-trigger:focus-visible, .settings-button:focus-visible { outline: 3px solid #e7a5aa; outline-offset: 2px; }
 @media (max-width: 650px) {
   body { padding-bottom: 72px; }
