@@ -54,7 +54,7 @@
   .hero-card { height: 300px; padding: 26px 24px; border-radius: 14px; }
   .hero-card h2 { font-size: 26px; margin-top: 14px; }
   .hero-card p { max-width: 210px; line-height: 1.45; }
-  .hero-art { right: -42%; top: 48px; transform: scale(.8); transform-origin: center right; opacity: .35; }
+  .hero-art { display: none; }
   .stats-grid { gap: 10px; padding: 14px 0; }
   .metric { padding: 15px 16px; }
   .content-grid { gap: 12px; }
