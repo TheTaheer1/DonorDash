@@ -15,6 +15,7 @@ import { authRoutes } from './routes/authRoutes.js';
 import { donorRoutes } from './routes/donorRoutes.js';
 import { notificationRoutes } from './routes/notificationRoutes.js';
 import { createRequestRoutes } from './routes/requestRoutes.js';
+import { dashboardRoutes } from './routes/dashboardRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { createNotification } from './services/notificationService.js';
 
@@ -37,6 +38,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/donors', donorRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/requests', createRequestRoutes(io));
+app.use('/api/dashboard', dashboardRoutes);
 app.use(errorHandler);
 
 cron.schedule('*/10 * * * *', async () => { try { const expired = await BloodRequest.find({ deadline: { $lt: new Date() }, status: { $in: ['OPEN', 'PARTIALLY_FILLED'] } }).select('_id requester'); if (!expired.length) return; await BloodRequest.updateMany({ _id: { $in: expired.map(request => request._id) } }, { status: 'EXPIRED' }); await Promise.allSettled(expired.map(request => createNotification(io, { user: request.requester, type: 'EXPIRED', title: 'Request expired', message: 'Your blood request passed its needed-by time without being fulfilled.', request: request._id }))); } catch (error) { console.error('Request expiry job failed:', error.message); } });
