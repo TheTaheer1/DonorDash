@@ -22,7 +22,7 @@ const authSlice = createSlice({
 });
 export const { setAuthUser, setAuthLoading, clearAuth } = authSlice.actions;
 
-const defaultProfile = { name: 'Priya Deshmukh', email: 'priya@example.com', phone: '+91 98123 45678', group: 'A+', city: 'Pune', gender: 'Female', dob: '1997-03-15', last: '2025-12-20', available: true };
+const defaultProfile = { name: 'Priya Deshmukh', email: 'priya@example.com', phone: '+91 98123 45678', group: 'A+', city: 'Pune', state: 'Maharashtra', gender: 'Female', dob: '1997-03-15', last: '2025-12-20', available: true };
 const defaultDonors = [
   { id: 'd1', name: 'Aarav Mehta', group: 'O-', city: 'Pune', gender: 'Male', dob: '1998-04-12', last: '2026-01-10', available: true, phone: '+91 98201 44512' },
   { id: 'd2', name: 'Meera Shah', group: 'A+', city: 'Pune', gender: 'Female', dob: '1994-08-20', last: '2025-11-12', available: true, phone: '+91 98765 12489' }

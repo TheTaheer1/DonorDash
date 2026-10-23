@@ -4,9 +4,9 @@ import { config } from './config.js';
 import { DonorProfile, User } from './models/index.js';
 
 const donors = [
-  { name: 'Aarav Mehta', email: 'aarav@donordash.app', phone: '+91 98201 44512', bloodGroup: 'O-', gender: 'Male', dob: '1998-04-12', city: 'Pune', lastDonatedAt: '2026-01-10' },
-  { name: 'Meera Shah', email: 'meera@donordash.app', phone: '+91 98765 12489', bloodGroup: 'A+', gender: 'Female', dob: '1994-08-20', city: 'Pune', lastDonatedAt: '2025-11-12' },
-  { name: 'Rohan Kulkarni', email: 'rohan@donordash.app', phone: '+91 98909 77881', bloodGroup: 'O+', gender: 'Male', dob: '1991-02-18', city: 'Mumbai', lastDonatedAt: '2026-03-03' }
+  { name: 'Aarav Mehta', email: 'aarav@donordash.app', phone: '+91 98201 44512', bloodGroup: 'O-', gender: 'Male', dob: '1998-04-12', city: 'Pune', state: 'Maharashtra', lastDonatedAt: '2026-01-10' },
+  { name: 'Meera Shah', email: 'meera@donordash.app', phone: '+91 98765 12489', bloodGroup: 'A+', gender: 'Female', dob: '1994-08-20', city: 'Pune', state: 'Maharashtra', lastDonatedAt: '2025-11-12' },
+  { name: 'Rohan Kulkarni', email: 'rohan@donordash.app', phone: '+91 98909 77881', bloodGroup: 'O+', gender: 'Male', dob: '1991-02-18', city: 'Mumbai', state: 'Maharashtra', lastDonatedAt: '2026-03-03' }
 ];
 
 await mongoose.connect(config.mongoUri);
