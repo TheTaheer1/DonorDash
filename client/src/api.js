@@ -9,6 +9,7 @@ export const api = {
   login: data => request('/api/auth/login', { method: 'POST', data }),
   demoLogin: () => request('/api/auth/demo', { method: 'POST' }),
   logout: () => request('/api/auth/logout', { method: 'POST' }),
+  updateMe: data => request('/api/auth/me', { method: 'PUT', data }),
   profile: () => request('/api/donors/me'),
   saveProfile: profile => request('/api/donors/me', { method: 'PUT', data: { bloodGroup: profile.group, gender: profile.gender, dob: profile.dob, city: profile.city, lastDonatedAt: profile.last || null, isAvailable: profile.available } }),
   requests: (params = {}) => request('/api/requests/mine', { params }),
