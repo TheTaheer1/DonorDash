@@ -34,6 +34,7 @@ server/
 - Express + MongoDB/Mongoose backend with User, DonorProfile, BloodRequest, and DonorResponse models.
 - Donor profile with blood group, city, state, gender, date of birth, last donation date, and availability toggle.
 - Urgent blood request workflow with hospital, city, state, units, deadline, duplicate-request protection, and compatibility preview.
+- MongoDB-backed verified hospital directory with city/state autocomplete and manual care-centre fallback.
 - Eligibility logic: same-city-and-state matching, compatible red blood cell groups, age 18-65, and configurable donation gap (90 days for men, 120 days for women).
 - Request lifecycle with open, partially filled, fulfilled, and decline paths.
 - Atomic-style fulfilment guard in the client workflow so a request cannot accept responses after its units are covered.

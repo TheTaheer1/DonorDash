@@ -20,6 +20,7 @@ export const api = {
   requestResponses: () => request('/api/requests/responses'),
   cancelRequest: id => request(`/api/requests/${id}/cancel`, { method: 'POST' }),
   createRequest: form => request('/api/requests', { method: 'POST', data: { bloodGroup: form.group, unitsNeeded: form.units, hospital: form.hospital, city: form.city, state: form.state, deadline: form.deadline } }),
+  hospitals: params => request('/api/hospitals', { params }),
   respond: (id, status) => request(`/api/requests/${id}/respond`, { method: 'POST', data: { status: status === 'accept' ? 'ACCEPTED' : 'DECLINED' } }),
   notifications: () => request('/api/notifications/mine'),
   markNotificationRead: id => request(`/api/notifications/${id}/read`, { method: 'PATCH' }),
