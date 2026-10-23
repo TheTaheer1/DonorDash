@@ -14,6 +14,7 @@ import { BloodRequest } from './models/index.js';
 import { authRoutes } from './routes/authRoutes.js';
 import { donorRoutes } from './routes/donorRoutes.js';
 import { notificationRoutes } from './routes/notificationRoutes.js';
+import { safetyRoutes } from './routes/safetyRoutes.js';
 import { createRequestRoutes } from './routes/requestRoutes.js';
 import { dashboardRoutes } from './routes/dashboardRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
@@ -37,6 +38,7 @@ app.get('/api/health', (req, res) => res.json({ ok: true, service: 'DonorDash AP
 app.use('/api/auth', authRoutes);
 app.use('/api/donors', donorRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/safety', safetyRoutes);
 app.use('/api/requests', createRequestRoutes(io));
 app.use('/api/dashboard', dashboardRoutes);
 app.use(errorHandler);

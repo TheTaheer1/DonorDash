@@ -40,6 +40,8 @@ server/
 - Privacy-aware UI: phone details are not publicly shown and the requester only sees a donor as accepted after consent.
 - JWT authentication in an httpOnly cookie, bcrypt password hashing, Zod validation, and rate limiting.
 - Secure password reset with one-time SHA-256-hashed tokens that expire after 30 minutes; reset requests return the same message whether an email exists or not.
+- Donor safety controls with a health disclaimer, report storage, and blocking that excludes blocked donors from future matches.
+- Frontend request expiry labels update every 30 seconds, even before the scheduled backend expiry job runs.
 - Persistent MongoDB data with a localStorage demo fallback when the API is not available.
 - Atomic accept protection using a conditional MongoDB update, email notification adapter, and node-cron expiry job.
 
@@ -90,6 +92,18 @@ Copy `.env.example` to `.env` and set `MONGO_URI` and `JWT_SECRET`. `npm run dev
 
 For Vercel, set `VITE_API_URL` to the Render API URL. For Render, use the included `render.yaml` and set `MONGO_URI`, `JWT_SECRET`, and `CLIENT_URL`.
 Production startup fails fast unless `MONGO_URI`, `CLIENT_URL`, and a JWT secret of at least 32 characters are present.
+
+## Deployment guide
+
+1. Create MongoDB Atlas database access credentials and add `0.0.0.0/0` to Network Access, or restrict it to the Render outbound IP range when available. Copy the Atlas connection string into Render as `MONGO_URI`.
+2. Create a Redis Cloud database and copy its TLS connection URL into Render as `REDIS_URL`. Redis is optional; the API continues without caching if it is unavailable.
+3. Create a Render Web Service from this repository. The included `render.yaml` uses `npm install` and `npm run server`. Set `MONGO_URI`, a random `JWT_SECRET` of at least 32 characters, the Vercel URL as `CLIENT_URL`, and the Redis/SMTP variables.
+4. Confirm the backend at `https://<render-service>.onrender.com/api/health`. It should return `{ "ok": true }`.
+5. Import the repository into Vercel. The included `vercel.json` builds from the project root and serves `client/dist`. Set `VITE_API_URL` to the complete Render API origin, without a trailing slash, then redeploy.
+6. Update Render `CLIENT_URL` to the exact Vercel production URL and redeploy the backend. This is required for CORS, cookies, Socket.IO, and password-reset links.
+7. Test in an incognito window: register, save a profile, create a request, verify the bell notification, test password reset, and confirm that opening `/profile` while logged out shows the login screen.
+
+`.env.example` documents every local variable. Never commit `.env`, MongoDB credentials, Redis URLs, SMTP passwords, or JWT secrets.
 
 ## Security notes
 

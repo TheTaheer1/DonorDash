@@ -3,3 +3,4 @@ export { DonorProfile } from './DonorProfile.js';
 export { BloodRequest } from './BloodRequest.js';
 export { DonorResponse } from './DonorResponse.js';
 export { Notification } from './Notification.js';
+export { SafetyReport } from './SafetyReport.js';

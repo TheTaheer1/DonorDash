@@ -24,4 +24,6 @@ export const api = {
   notifications: () => request('/api/notifications/mine'),
   markNotificationRead: id => request(`/api/notifications/${id}/read`, { method: 'PATCH' }),
   markAllNotificationsRead: () => request('/api/notifications/read-all', { method: 'POST' })
+  ,reportUser: data => request('/api/safety/report', { method: 'POST', data })
+  ,blockUser: id => request(`/api/safety/block/${id}`, { method: 'POST' })
 };

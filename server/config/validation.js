@@ -14,5 +14,6 @@ export const loginSchema = z.object({ email: z.string().email().max(254), passwo
 export const passwordResetRequestSchema = z.object({ email: z.string().email().max(254) });
 export const passwordResetSchema = z.object({ token: z.string().min(32).max(200), password: z.string().min(8).max(128) });
 export const deleteAccountSchema = z.object({ password: z.string().min(1).max(128) });
+export const safetyReportSchema = z.object({ reportedUserId: z.string().min(12).max(30), requestId: z.string().min(12).max(30).optional(), reason: z.string().trim().min(5).max(500) });
 export const identitySchema = z.object({ name: z.string().trim().min(2).max(80), email: z.string().email().max(254), phone: z.string().trim().regex(/^\+?[0-9][0-9\s()-]{7,18}$/, 'Enter a valid phone number').refine(value => value.replace(/\D/g, '').length <= 15, 'Phone number cannot exceed 15 digits') });
 export const responseSchema = z.object({ status: z.enum(['ACCEPTED', 'DECLINED']) });
