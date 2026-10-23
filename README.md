@@ -79,6 +79,12 @@ npm install
 npm run dev
 ```
 
+To add demo donor records to MongoDB for local testing, run this once from the project root:
+
+```bash
+npm run seed
+```
+
 Copy `.env.example` to `.env` and set `MONGO_URI` and `JWT_SECRET`. `npm run dev` starts Vite and the Express API together. MongoDB must be running locally or supplied through MongoDB Atlas. If the API cannot connect, the frontend remains usable in local demo mode.
 
 For Vercel, set `VITE_API_URL` to the Render API URL. For Render, use the included `render.yaml` and set `MONGO_URI`, `JWT_SECRET`, and `CLIENT_URL`.
