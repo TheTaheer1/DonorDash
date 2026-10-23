@@ -41,8 +41,8 @@
   .sidebar .nav-item.active { background: #f9e8e8; color: var(--red); }
   .sidebar .nav-item svg { width: 19px; height: 19px; }
   .sidebar .nav-item em { position: absolute; top: 3px; right: 8px; margin: 0; transform: none; font-size: 8px; padding: 2px 5px; }
-  .main { width: 100%; padding-bottom: 8px; }
-  .topbar { position: sticky; top: 0; z-index: 25; height: 62px; padding: 0 16px; }
+  .main { width: 100%; padding-top: 62px; padding-bottom: 8px; }
+  .topbar { position: fixed; left: 0; right: 0; width: 100%; top: 0; z-index: 25; height: 62px; padding: 0 16px; }
   .mobile-header-brand { display: block; font: 700 18px 'Space Grotesk'; color: var(--ink); white-space: nowrap; }
   .mobile-header-brand span { color: var(--red); }
   .mobile-profile-name { display: block; max-width: 92px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); font-size: 11px; font-weight: 600; }
