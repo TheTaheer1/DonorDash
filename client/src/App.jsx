@@ -28,7 +28,7 @@ export function App() {
   const setRequests = next => dispatch(setRequestsState(typeof next === 'function' ? next(store.getState().data.requests) : next));
   const unreadCount = notifications.filter(item => !item.readAt).length;
   const handleAuthenticated = async user => { dispatch(setAuthUser(user)); refreshSocketAuth(); await loadSessionData(user); navigate('/'); };
-  const handleLogout = async () => { await api.logout().catch(() => null); if (socket.connected) socket.disconnect(); dispatch(clearAuth()); setNotificationsOpen(false); navigate('/'); };
+  const handleLogout = async () => { if (!window.confirm('Are you sure you want to log out?')) return; await api.logout().catch(() => null); if (socket.connected) socket.disconnect(); dispatch(clearAuth()); setNotificationsOpen(false); navigate('/'); };
   const markNotificationRead = async id => { try { await api.markNotificationRead(id); dispatch(markNotificationReadState(id)); } catch (error) { setToast(apiErrorMessage(error)); } };
   const markAllNotificationsRead = async () => { try { await api.markAllNotificationsRead(); dispatch(markAllNotificationsReadState()); } catch (error) { setToast(apiErrorMessage(error)); } };
   const handleCreate = async form => { try { const result = await api.createRequest(form); const r = result.request; setRequests(current => [{ ...r, id: r._id, group: r.bloodGroup, units: r.unitsNeeded, confirmed: r.unitsConfirmed, matched: r.matchedDonors || [] }, ...current]); setPage('requests'); setToast(`Request created — ${result.matchedCount} eligible donors matched.`); } catch (error) { setToast(apiErrorMessage(error)); } };
