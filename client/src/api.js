@@ -12,7 +12,7 @@ export const api = {
   updateMe: data => request('/api/auth/me', { method: 'PUT', data }),
   dashboard: () => request('/api/dashboard/summary'),
   profile: () => request('/api/donors/me'),
-  saveProfile: profile => request('/api/donors/me', { method: 'PUT', data: { bloodGroup: profile.group, gender: profile.gender, dob: profile.dob, city: profile.city, lastDonatedAt: profile.last || null, isAvailable: profile.available } }),
+  saveProfile: profile => request('/api/donors/me', { method: 'PUT', data: { bloodGroup: profile.group, gender: profile.gender, dob: profile.dob, city: profile.city, lastDonatedAt: profile.last || null, isAvailable: profile.available, healthEligible: profile.healthEligible } }),
   requests: (params = {}) => request('/api/requests/mine', { params }),
   requestResponses: () => request('/api/requests/responses'),
   cancelRequest: id => request(`/api/requests/${id}/cancel`, { method: 'POST' }),

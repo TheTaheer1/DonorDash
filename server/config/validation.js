@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const group = z.enum(['O-', 'O+', 'A-', 'A+', 'B-', 'B+', 'AB-', 'AB+']);
-export const profileSchema = z.object({ bloodGroup: group, gender: z.enum(['Male', 'Female', 'Other']), dob: z.coerce.date(), city: z.string().trim().min(2).max(100), lastDonatedAt: z.coerce.date().optional().nullable(), isAvailable: z.boolean().default(true) }).superRefine((data, ctx) => {
+export const profileSchema = z.object({ bloodGroup: group, gender: z.enum(['Male', 'Female', 'Other']), dob: z.coerce.date(), city: z.string().trim().min(2).max(100), lastDonatedAt: z.coerce.date().optional().nullable(), isAvailable: z.boolean().default(true), healthEligible: z.boolean().default(false) }).superRefine((data, ctx) => {
   const today = new Date();
   if (data.dob > today) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['dob'], message: 'Date of birth cannot be in the future' });
   const years = today.getFullYear() - data.dob.getFullYear() - ((today.getMonth() < data.dob.getMonth() || (today.getMonth() === data.dob.getMonth() && today.getDate() < data.dob.getDate())) ? 1 : 0);
