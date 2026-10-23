@@ -16,6 +16,7 @@ import { donorRoutes } from './routes/donorRoutes.js';
 import { notificationRoutes } from './routes/notificationRoutes.js';
 import { createRequestRoutes } from './routes/requestRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { createNotification } from './services/notificationService.js';
 
 const app = express();
 app.disable('x-powered-by');
@@ -38,6 +39,6 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/requests', createRequestRoutes(io));
 app.use(errorHandler);
 
-cron.schedule('*/10 * * * *', async () => { await BloodRequest.updateMany({ deadline: { $lt: new Date() }, status: { $in: ['OPEN', 'PARTIALLY_FILLED'] } }, { status: 'EXPIRED' }); });
+cron.schedule('*/10 * * * *', async () => { try { const expired = await BloodRequest.find({ deadline: { $lt: new Date() }, status: { $in: ['OPEN', 'PARTIALLY_FILLED'] } }).select('_id requester'); if (!expired.length) return; await BloodRequest.updateMany({ _id: { $in: expired.map(request => request._id) } }, { status: 'EXPIRED' }); await Promise.allSettled(expired.map(request => createNotification(io, { user: request.requester, type: 'EXPIRED', title: 'Request expired', message: 'Your blood request passed its needed-by time without being fulfilled.', request: request._id }))); } catch (error) { console.error('Request expiry job failed:', error.message); } });
 
 connectDatabase().then(connectRedis).then(() => httpServer.listen(config.port, () => console.log(`DonorDash API running on http://localhost:${config.port}`))).catch(error => { console.error('MongoDB connection failed:', error.message); console.error('Start MongoDB or set MONGO_URI before using the API.'); process.exitCode = 1; });

@@ -5,8 +5,8 @@ export const canReceiveFrom = { 'O-': ['O-'], 'O+': ['O+', 'O-'], 'A-': ['A-', '
 const age = dob => Math.floor((Date.now() - new Date(dob).getTime()) / 31557600000);
 const daysSince = date => date ? Math.floor((Date.now() - new Date(date).getTime()) / 86400000) : Infinity;
 
-export async function findEligibleDonors({ bloodGroup, city }) {
+export async function findEligibleDonors({ bloodGroup, city, excludeUserId }) {
   const escapedCity = city.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const donors = await DonorProfile.find({ isAvailable: true, city: new RegExp(`^${escapedCity}$`, 'i'), bloodGroup: { $in: canReceiveFrom[bloodGroup] } }).populate('user', 'name email phone').lean();
+  const donors = await DonorProfile.find({ isAvailable: true, city: new RegExp(`^${escapedCity}$`, 'i'), bloodGroup: { $in: canReceiveFrom[bloodGroup] }, ...(excludeUserId ? { user: { $ne: excludeUserId } } : {}) }).populate('user', 'name email phone').lean();
   return donors.filter(d => age(d.dob) >= 18 && age(d.dob) <= 65 && daysSince(d.lastDonatedAt) >= (d.gender === 'Female' ? config.gapFemale : config.gapMale)).sort((a, b) => new Date(a.lastDonatedAt || 0) - new Date(b.lastDonatedAt || 0));
 }
