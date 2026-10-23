@@ -53,17 +53,17 @@
   .page-title p { font-size: 12px; line-height: 1.45; max-width: 330px; }
   .page-title .primary { width: 100%; justify-content: center; margin-top: 16px; }
   .hero-card { height: 270px; padding: 25px 22px; border-radius: 14px; }
-  .hero-card > div:first-child { position: relative; z-index: 2; max-width: 66%; }
+  .hero-card > div:first-child { position: relative; z-index: 2; max-width: 58%; }
   .hero-card h2 { font-size: 23px; margin-top: 14px; }
-  .hero-card p { max-width: 205px; line-height: 1.45; }
-  .hero-art { display: block; width: 205px; height: 205px; right: -12px; top: 31px; opacity: .72; }
+  .hero-card p { max-width: 175px; line-height: 1.45; }
+  .hero-art { display: block; width: 205px; height: 205px; right: -28px; top: 31px; opacity: .72; }
   .ring-one { width: 135px; height: 135px; left: 35px; top: 34px; }
   .ring-two { width: 195px; height: 195px; left: 5px; top: 4px; }
   .blood-drop { width: 54px; height: 68px; left: 76px; top: 66px; font-size: 25px; }
   .art-stat strong { font-size: 11px; }
   .art-stat small { font-size: 8px; }
-  .stat-one { left: 0; top: 38px; }
-  .stat-two { right: 0; top: 139px; }
+  .stat-one { left: 70px; top: 12px; }
+  .stat-two { right: 8px; top: 139px; }
   .stats-grid { gap: 10px; padding: 14px 0; }
   .metric { padding: 15px 16px; }
   .content-grid { gap: 12px; }
