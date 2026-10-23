@@ -11,6 +11,17 @@ const uiSlice = createSlice({
 });
 export const { showToast, clearToast, setOnline } = uiSlice.actions;
 
+const authSlice = createSlice({
+  name: 'auth',
+  initialState: { user: null, loading: true },
+  reducers: {
+    setAuthUser: (state, action) => { state.user = action.payload; },
+    setAuthLoading: (state, action) => { state.loading = action.payload; },
+    clearAuth: state => { state.user = null; }
+  }
+});
+export const { setAuthUser, setAuthLoading, clearAuth } = authSlice.actions;
+
 const defaultProfile = { name: 'Priya Deshmukh', email: 'priya@example.com', phone: '+91 98123 45678', group: 'A+', city: 'Pune', gender: 'Female', dob: '1997-03-15', last: '2025-12-20', available: true };
 const defaultDonors = [
   { id: 'd1', name: 'Aarav Mehta', group: 'O-', city: 'Pune', gender: 'Male', dob: '1998-04-12', last: '2026-01-10', available: true, phone: '+91 98201 44512' },
@@ -32,4 +43,4 @@ const dataSlice = createSlice({
   }
 });
 export const { setProfileState, setDonorsState, setRequestsState, setHydrated, setNotificationsState, markNotificationReadState, markAllNotificationsReadState } = dataSlice.actions;
-export const store = configureStore({ reducer: { ui: uiSlice.reducer, data: dataSlice.reducer } });
+export const store = configureStore({ reducer: { ui: uiSlice.reducer, auth: authSlice.reducer, data: dataSlice.reducer } });
