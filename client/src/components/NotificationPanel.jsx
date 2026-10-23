@@ -8,9 +8,9 @@ const relativeTime = value => {
   return `${Math.floor(hours / 24)}d ago`;
 };
 
-export function NotificationPanel({ notifications, onRead, onReadAll }) {
+export function NotificationPanel({ notifications, onRead, onReadAll, onClose }) {
   return <div className="notification-panel" role="dialog" aria-label="Notifications">
-    <div className="notification-head"><div><strong>Notifications</strong><small>{notifications.filter(item => !item.readAt).length} unread</small></div><button onClick={onReadAll} disabled={!notifications.some(item => !item.readAt)}>Mark all read</button></div>
+    <div className="notification-head"><div><strong>Notifications</strong><small>{notifications.filter(item => !item.readAt).length} unread</small></div><div className="notification-head-actions"><button onClick={onReadAll} disabled={!notifications.some(item => !item.readAt)}>Mark all read</button><button className="notification-close" type="button" onClick={onClose} aria-label="Close notifications">×</button></div></div>
     <div className="notification-list">{notifications.length ? notifications.map(item => <button className={`notification-item ${item.readAt ? '' : 'unread'}`} key={item._id} onClick={() => onRead(item._id)}><span className="notification-icon"><Icon name={item.type === 'MATCH' ? 'users' : item.type === 'FULFILLED' ? 'check' : 'bell'} size={15} /></span><span><strong>{item.title}</strong><small>{item.message}</small><em>{relativeTime(item.createdAt)}</em></span></button>) : <div className="notification-empty"><Icon name="bell" size={20} /><strong>You’re all caught up</strong><span>New updates will appear here.</span></div>}</div>
   </div>;
 }

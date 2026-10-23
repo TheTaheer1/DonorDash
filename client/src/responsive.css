@@ -12,6 +12,9 @@
 .notification-head small { color: var(--muted); font-size: 10px; margin-top: 3px; }
 .notification-head button { border: 0; background: none; color: var(--red); cursor: pointer; font: 600 10px 'DM Sans'; }
 .notification-head button:disabled { color: #bdb8bb; cursor: default; }
+.notification-head-actions { display: flex; align-items: center; gap: 10px; }
+.notification-close { width: 26px; height: 26px; padding: 0; border: 1px solid var(--line) !important; border-radius: 50%; color: var(--muted) !important; font-size: 20px !important; font-weight: 400 !important; line-height: 22px; }
+.notification-close:hover, .notification-close:focus-visible { color: var(--red) !important; border-color: var(--red) !important; background: #fff5f4; }
 .notification-list { max-height: 360px; overflow-y: auto; }
 .notification-item { width: 100%; display: flex; gap: 10px; padding: 13px 15px; border: 0; border-bottom: 1px solid #f1edeb; background: #fff; text-align: left; cursor: pointer; }
 .notification-item:hover, .notification-item.unread { background: #fff8f7; }
