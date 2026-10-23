@@ -5,7 +5,10 @@ const request = async (path, options = {}) => (await client({ url: path, ...opti
 export const apiErrorMessage = error => error?.response?.data?.message || (error?.request ? 'The server could not be reached. Check that the API is running.' : 'Something went wrong. Please try again.');
 export const api = {
   me: () => request('/api/auth/me'),
+  register: data => request('/api/auth/register', { method: 'POST', data }),
+  login: data => request('/api/auth/login', { method: 'POST', data }),
   demoLogin: () => request('/api/auth/demo', { method: 'POST' }),
+  logout: () => request('/api/auth/logout', { method: 'POST' }),
   profile: () => request('/api/donors/me'),
   saveProfile: profile => request('/api/donors/me', { method: 'PUT', data: { bloodGroup: profile.group, gender: profile.gender, dob: profile.dob, city: profile.city, lastDonatedAt: profile.last || null, isAvailable: profile.available } }),
   requests: (params = {}) => request('/api/requests/mine', { params }),
