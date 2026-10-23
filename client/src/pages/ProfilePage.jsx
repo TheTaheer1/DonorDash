@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Icon } from '../components/Icon';
 import { PageTitle } from '../components/PageTitle';
 import { groups, age } from '../features/requests/constants';
 
 export function ProfilePage({ profile, onSave, onLogout }) {
   const [draft, setDraft] = useState({ healthEligible: false, ...profile });
+  useEffect(() => { setDraft({ healthEligible: false, ...profile }); }, [profile]);
   const dirty = JSON.stringify(draft) !== JSON.stringify(profile);
   const update = event => setDraft(current => ({ ...current, [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value }));
   const save = event => { event.preventDefault(); onSave(draft); };
