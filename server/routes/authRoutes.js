@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { DonorProfile, User } from '../models/index.js';
+import { BloodRequest, DonorProfile, DonorResponse, Notification, User } from '../models/index.js';
 import { asyncRoute } from '../middleware/asyncRoute.js';
 import { auth } from '../middleware/auth.js';
 import { identitySchema, loginSchema, registrationSchema } from '../config/validation.js';
 import { cookieOptions, hashPassword, publicUser, tokenFor, verifyPassword } from '../services/authService.js';
 import { createHash, randomBytes } from 'node:crypto';
-import { passwordResetRequestSchema, passwordResetSchema } from '../config/validation.js';
+import { deleteAccountSchema, passwordResetRequestSchema, passwordResetSchema } from '../config/validation.js';
 import { sendPasswordResetEmail } from '../mailer.js';
 
 export const authRoutes = Router();
@@ -16,4 +16,5 @@ authRoutes.post('/password-reset/complete', asyncRoute(async (req, res) => { con
 authRoutes.post('/demo', asyncRoute(async (req, res) => { if (process.env.NODE_ENV === 'production') return res.status(404).json({ message: 'Not available in production' }); let user = await User.findOne({ email: 'demo@donordash.app' }); if (!user) user = await User.create({ name: 'Priya Deshmukh', email: 'demo@donordash.app', phone: '+91 98123 45678', passwordHash: await hashPassword('DonorDashDemo123!') }); res.cookie('dd_token', tokenFor(user), cookieOptions).json({ user: publicUser(user) }); }));
 authRoutes.post('/logout', (req, res) => { res.clearCookie('dd_token'); res.status(204).end(); });
 authRoutes.put('/me', auth, asyncRoute(async (req, res) => { const body = identitySchema.parse(req.body); const email = body.email.toLowerCase(); if (await User.exists({ email, _id: { $ne: req.user._id } })) return res.status(409).json({ message: 'That email is already registered' }); const user = await User.findByIdAndUpdate(req.user._id, { ...body, email }, { new: true, runValidators: true }); res.json({ user: publicUser(user) }); }));
+authRoutes.delete('/me', auth, asyncRoute(async (req, res) => { const { password } = deleteAccountSchema.parse(req.body); const user = await User.findById(req.user._id).select('+passwordHash'); if (!user || !(await verifyPassword(password, user.passwordHash))) return res.status(401).json({ message: 'Incorrect password. Your account was not deleted.' }); const profile = await DonorProfile.findOne({ user: user._id }).select('_id').lean(); const requests = await BloodRequest.find({ requester: user._id }).select('_id').lean(); const requestIds = requests.map(request => request._id); if (profile) await BloodRequest.updateMany({ matchedDonors: profile._id }, { $pull: { matchedDonors: profile._id } }); const responseFilter = profile ? { $or: [{ donor: profile._id }, { request: { $in: requestIds } }] } : { request: { $in: requestIds } }; await Promise.all([DonorResponse.deleteMany(responseFilter), BloodRequest.deleteMany({ requester: user._id }), Notification.deleteMany({ user: user._id }), DonorProfile.deleteOne({ user: user._id }), User.deleteOne({ _id: user._id })]); res.clearCookie('dd_token').status(204).end(); }));
 authRoutes.get('/me', auth, asyncRoute(async (req, res) => res.json({ user: publicUser(req.user) })));

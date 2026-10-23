@@ -12,6 +12,7 @@ export const api = {
   demoLogin: () => request('/api/auth/demo', { method: 'POST' }),
   logout: () => request('/api/auth/logout', { method: 'POST' }),
   updateMe: data => request('/api/auth/me', { method: 'PUT', data }),
+  deleteAccount: password => request('/api/auth/me', { method: 'DELETE', data: { password } }),
   dashboard: () => request('/api/dashboard/summary'),
   profile: () => request('/api/donors/me'),
   saveProfile: profile => request('/api/donors/me', { method: 'PUT', data: { bloodGroup: profile.group, gender: profile.gender, dob: profile.dob, city: profile.city, state: profile.state, lastDonatedAt: profile.last || null, isAvailable: profile.available, healthEligible: profile.healthEligible } }),
