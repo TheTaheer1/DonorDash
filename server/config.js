@@ -12,6 +12,7 @@ export const config = {
   mongoUri: process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/donordash',
   jwtSecret: process.env.JWT_SECRET || 'donordash-development-secret',
   clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
+  redisUrl: process.env.REDIS_URL || '',
   gapMale: Number(process.env.DONATION_GAP_MALE_DAYS || 90),
   gapFemale: Number(process.env.DONATION_GAP_FEMALE_DAYS || 120)
 };

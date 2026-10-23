@@ -9,6 +9,7 @@ import helmet from 'helmet';
 import cron from 'node-cron';
 import { config } from './config.js';
 import { connectDatabase } from './config/database.js';
+import { connectRedis } from './config/redis.js';
 import { BloodRequest } from './models/index.js';
 import { authRoutes } from './routes/authRoutes.js';
 import { donorRoutes } from './routes/donorRoutes.js';
@@ -39,4 +40,4 @@ app.use(errorHandler);
 
 cron.schedule('*/10 * * * *', async () => { await BloodRequest.updateMany({ deadline: { $lt: new Date() }, status: { $in: ['OPEN', 'PARTIALLY_FILLED'] } }, { status: 'EXPIRED' }); });
 
-connectDatabase().then(() => httpServer.listen(config.port, () => console.log(`DonorDash API running on http://localhost:${config.port}`))).catch(error => { console.error('MongoDB connection failed:', error.message); console.error('Start MongoDB or set MONGO_URI before using the API.'); process.exitCode = 1; });
+connectDatabase().then(connectRedis).then(() => httpServer.listen(config.port, () => console.log(`DonorDash API running on http://localhost:${config.port}`))).catch(error => { console.error('MongoDB connection failed:', error.message); console.error('Start MongoDB or set MONGO_URI before using the API.'); process.exitCode = 1; });

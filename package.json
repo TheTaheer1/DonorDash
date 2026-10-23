@@ -11,10 +11,10 @@
     "preview": "vite preview --config client/vite.config.js"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "latest",
     "@reduxjs/toolkit": "latest",
-    "axios": "latest",
+    "@vitejs/plugin-react": "latest",
     "autoprefixer": "latest",
+    "axios": "latest",
     "bcryptjs": "latest",
     "concurrently": "latest",
     "cookie-parser": "latest",
@@ -28,15 +28,15 @@
     "node-cron": "latest",
     "nodemailer": "latest",
     "postcss": "latest",
-    "vite": "latest",
     "react": "latest",
     "react-dom": "latest",
     "react-redux": "latest",
     "react-router-dom": "latest",
+    "redis": "^6.3.0",
     "socket.io": "latest",
     "socket.io-client": "latest",
     "tailwindcss": "^3.4.17",
+    "vite": "latest",
     "zod": "latest"
-  },
-  "devDependencies": {}
+  }
 }
