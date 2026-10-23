@@ -5,3 +5,8 @@ export async function notifyDonor(donor, request) {
   if (!transport) { console.info(`[DonorDash] notification queued for ${donor.user?.email || donor.user}: ${request.bloodGroup} at ${request.hospital}`); return; }
   try { await transport.sendMail({ from: process.env.SMTP_USER, to: donor.user.email, subject: `Urgent ${request.bloodGroup} blood request near you`, text: `A compatible request is open at ${request.hospital}, ${request.city}. Log in to DonorDash to respond.` }); } catch (error) { console.error('[DonorDash] email failed; request remains active', error.message); }
 }
+
+export async function sendPasswordResetEmail(user, resetUrl) {
+  if (!transport) { console.info(`[DonorDash] password reset link for ${user.email}: ${resetUrl}`); return; }
+  try { await transport.sendMail({ from: process.env.SMTP_USER, to: user.email, subject: 'Reset your DonorDash password', text: `Use this link to reset your DonorDash password. It expires in 30 minutes: ${resetUrl}` }); } catch (error) { console.error('[DonorDash] password reset email failed', error.message); }
+}

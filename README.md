@@ -39,6 +39,7 @@ server/
 - Atomic-style fulfilment guard in the client workflow so a request cannot accept responses after its units are covered.
 - Privacy-aware UI: phone details are not publicly shown and the requester only sees a donor as accepted after consent.
 - JWT authentication in an httpOnly cookie, bcrypt password hashing, Zod validation, and rate limiting.
+- Secure password reset with one-time SHA-256-hashed tokens that expire after 30 minutes; reset requests return the same message whether an email exists or not.
 - Persistent MongoDB data with a localStorage demo fallback when the API is not available.
 - Atomic accept protection using a conditional MongoDB update, email notification adapter, and node-cron expiry job.
 
@@ -100,6 +101,8 @@ Production startup fails fast unless `MONGO_URI`, `CLIENT_URL`, and a JWT secret
 - Private request access is protected by JWT authentication plus requester ownership filters; donor contact details are not exposed before acceptance.
 
 For a production deployment, set `NODE_ENV=production`, `CLIENT_URL`, a strong `JWT_SECRET`, and SMTP credentials. The development demo-login route is disabled in production.
+
+Password reset requires the optional SMTP variables in `.env` (`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, and `SMTP_PASS`). Without SMTP in development, the reset link is printed only to the server console for local testing. Never enable that development behavior in a public production deployment.
 
 ## Product context
 
