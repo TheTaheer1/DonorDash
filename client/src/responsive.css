@@ -13,6 +13,7 @@
   .sidebar .nav-item em { position: absolute; top: 3px; right: 8px; margin: 0; font-size: 8px; padding: 2px 5px; }
   .main { width: 100%; padding-bottom: 8px; }
   .topbar { height: 62px; padding: 0 16px; }
+  .breadcrumbs::before { content: 'DonorDash'; color: var(--red); font: 700 16px 'Space Grotesk'; margin-right: 12px; }
   .top-actions { gap: 14px; }
   .main > .page-title, .main > .hero-card, .main > .stats-grid, .main > .content-grid, .main > .filter-bar, .main > .request-list, .main > .form-layout, .main > .profile-layout { margin-left: 16px; margin-right: 16px; }
   .page-title { padding: 28px 0 22px; }
