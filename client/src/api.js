@@ -19,6 +19,8 @@ export const api = {
   requests: (params = {}) => request('/api/requests/mine', { params }),
   requestResponses: () => request('/api/requests/responses'),
   cancelRequest: id => request(`/api/requests/${id}/cancel`, { method: 'POST' }),
+  updateRequest: (id, form) => request(`/api/requests/${id}`, { method: 'PUT', data: { bloodGroup: form.group, unitsNeeded: form.units, hospital: form.hospital, city: form.city, state: form.state, deadline: form.deadline } }),
+  deleteRequest: id => request(`/api/requests/${id}`, { method: 'DELETE' }),
   createRequest: form => request('/api/requests', { method: 'POST', data: { bloodGroup: form.group, unitsNeeded: form.units, hospital: form.hospital, city: form.city, state: form.state, deadline: form.deadline } }),
   hospitals: params => request('/api/hospitals', { params }),
   respond: (id, status) => request(`/api/requests/${id}/respond`, { method: 'POST', data: { status: status === 'accept' ? 'ACCEPTED' : 'DECLINED' } }),
