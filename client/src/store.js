@@ -20,13 +20,16 @@ const defaultRequests = [{ id: 'req-1', group: 'O-', units: 2, confirmed: 1, hos
 const read = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } };
 const dataSlice = createSlice({
   name: 'data',
-  initialState: { profile: read('dd-profile', defaultProfile), donors: read('dd-donors', defaultDonors), requests: read('dd-requests', defaultRequests), hydrated: false },
+  initialState: { profile: read('dd-profile', defaultProfile), donors: read('dd-donors', defaultDonors), requests: read('dd-requests', defaultRequests), notifications: [], hydrated: false },
   reducers: {
     setProfileState: (state, action) => { state.profile = action.payload; },
     setDonorsState: (state, action) => { state.donors = action.payload; },
     setRequestsState: (state, action) => { state.requests = action.payload; },
-    setHydrated: (state, action) => { state.hydrated = action.payload; }
+    setHydrated: (state, action) => { state.hydrated = action.payload; },
+    setNotificationsState: (state, action) => { state.notifications = action.payload; },
+    markNotificationReadState: (state, action) => { const notification = state.notifications.find(item => item._id === action.payload); if (notification) notification.readAt = new Date().toISOString(); },
+    markAllNotificationsReadState: state => { state.notifications.forEach(notification => { notification.readAt = new Date().toISOString(); }); }
   }
 });
-export const { setProfileState, setDonorsState, setRequestsState, setHydrated } = dataSlice.actions;
+export const { setProfileState, setDonorsState, setRequestsState, setHydrated, setNotificationsState, markNotificationReadState, markAllNotificationsReadState } = dataSlice.actions;
 export const store = configureStore({ reducer: { ui: uiSlice.reducer, data: dataSlice.reducer } });
