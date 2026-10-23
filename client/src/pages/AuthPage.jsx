@@ -10,7 +10,7 @@ export function AuthPage({ onAuthenticated }) {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const update = event => setForm(current => ({ ...current, [event.target.name]: event.target.value }));
+  const update = event => setForm(current => ({ ...current, [event.target.name]: event.target.name === 'phone' ? event.target.value.replace(/\D/g, '').slice(0, 10) : event.target.value }));
   const submit = async event => { event.preventDefault(); setError(''); setBusy(true); try { const result = mode === 'login' ? await api.login({ email: form.email, password: form.password }) : await api.register({ ...form, lastDonatedAt: null, isAvailable: true }); onAuthenticated(result.user); } catch (requestError) { setError(apiErrorMessage(requestError)); } finally { setBusy(false); } };
   const demo = async () => { setError(''); setBusy(true); try { const result = await api.demoLogin(); onAuthenticated(result.user); } catch (requestError) { setError(apiErrorMessage(requestError)); } finally { setBusy(false); } };
   const switchMode = nextMode => { setMode(nextMode); setError(''); setShowPassword(false); };
