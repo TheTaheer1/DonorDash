@@ -32,9 +32,9 @@ server/
 
 - React + Tailwind CSS frontend with a responsive dashboard, forms, validation messages, empty states, and mobile layout.
 - Express + MongoDB/Mongoose backend with User, DonorProfile, BloodRequest, and DonorResponse models.
-- Donor profile with blood group, city, gender, date of birth, last donation date, and availability toggle.
-- Urgent blood request workflow with hospital, city, units, deadline, and compatibility preview.
-- Eligibility logic: same-city matching, compatible red blood cell groups, age 18-65, and configurable donation gap (90 days for men, 120 days for women).
+- Donor profile with blood group, city, state, gender, date of birth, last donation date, and availability toggle.
+- Urgent blood request workflow with hospital, city, state, units, deadline, duplicate-request protection, and compatibility preview.
+- Eligibility logic: same-city-and-state matching, compatible red blood cell groups, age 18-65, and configurable donation gap (90 days for men, 120 days for women).
 - Request lifecycle with open, partially filled, fulfilled, and decline paths.
 - Atomic-style fulfilment guard in the client workflow so a request cannot accept responses after its units are covered.
 - Privacy-aware UI: phone details are not publicly shown and the requester only sees a donor as accepted after consent.
@@ -48,7 +48,7 @@ server/
 | --- | --- |
 | Authentication and authorization | JWT in an HTTP-only cookie, bcrypt, protected ownership queries, and role field for future admin controls |
 | Persistent data and state management | MongoDB/Mongoose persistence plus Redux Toolkit state and local demo persistence |
-| Search, filtering, and recommendations | Blood-group compatibility, city matching, age/donation-gap eligibility, and longest-wait ranking |
+| Search, filtering, and recommendations | Blood-group compatibility, city/state matching, age/donation-gap eligibility, and longest-wait ranking |
 | User-generated content | Requesters create and update urgent blood requests |
 | Real-time communication | Socket.IO broadcasts request creation and cancellation updates |
 | Notifications | Nodemailer adapter with safe development logging and failure isolation |
