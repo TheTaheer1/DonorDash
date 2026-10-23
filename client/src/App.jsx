@@ -28,6 +28,7 @@ export function App() {
   useEffect(() => { if (!toast) return; const timeout = setTimeout(() => setToast(''), 3200); return () => clearTimeout(timeout); }, [toast]);
   const setRequests = next => dispatch(setRequestsState(typeof next === 'function' ? next(store.getState().data.requests) : next));
   const unreadCount = notifications.filter(item => !item.readAt).length;
+  useEffect(() => { const badge = document.querySelector('.notification-wrap .icon-button i'); if (badge) badge.dataset.count = unreadCount > 99 ? '99+' : String(unreadCount); }, [unreadCount]);
   const handleAuthenticated = async user => { localStorage.setItem('dd-session', '1'); setSessionMessage(''); dispatch(setAuthUser(user)); refreshSocketAuth(); await loadSessionData(user); navigate('/'); };
   const handleLogout = async () => { if (!window.confirm('Are you sure you want to log out?')) return; await api.logout().catch(() => null); localStorage.removeItem('dd-session'); if (socket.connected) socket.disconnect(); dispatch(clearAuth()); setNotificationsOpen(false); navigate('/'); };
   const markNotificationRead = async id => { try { await api.markNotificationRead(id); dispatch(markNotificationReadState(id)); } catch (error) { setToast(apiErrorMessage(error)); } };
