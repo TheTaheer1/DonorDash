@@ -45,7 +45,7 @@ Donors receive private notifications and choose whether to help. Contact details
 - Database: MongoDB with Mongoose; MongoDB Atlas for production.
 - Cache: Redis, optional in development and used by the deployed backend when configured.
 - Authentication: JWT stored in an HTTP-only cookie and bcrypt password hashing.
-- Deployment: Render serves the production frontend and backend from one origin; Vercel remains an optional frontend preview deployment.
+- Deployment: Vercel serves the production frontend and proxies API/Socket.IO traffic to the Render backend.
 
 ## Architecture
 
@@ -137,21 +137,21 @@ Production startup fails if `MONGO_URI`, `CLIENT_URL`, or a sufficiently long `J
 
 - Frontend: [donordash-blood-network.vercel.app](https://donordash-blood-network.vercel.app/)
 - Backend health check: [donordash-api.onrender.com/api/health](https://donordash-api.onrender.com/api/health)
-- Same-origin production app: [donordash-api.onrender.com](https://donordash-api.onrender.com/)
 - Source repository: [github.com/TheTaheer1/DonorDash](https://github.com/TheTaheer1/DonorDash)
 
-### Render production app
+### Vercel production frontend
+
+1. Import the repository into Vercel using the included `vercel.json` configuration.
+2. Vercel serves the React frontend and proxies `/api/*` and `/socket.io/*` to Render.
+3. No `VITE_API_URL` value is required for production; the frontend uses its own Vercel origin.
+4. Open the Vercel URL for testing in Chrome, Safari, and Incognito.
+
+### Render backend
 
 1. Create a Render Web Service from the GitHub repository, or use the included `render.yaml` Blueprint.
 2. The Blueprint runs `npm install && npm run build`, then starts `npm run server`.
-3. The Node server serves `client/dist` and the `/api` routes from the same Render origin.
-4. Set `MONGO_URI`, `JWT_SECRET`, and optional Redis/SMTP variables in Render Environment. `CLIENT_URL` is the Render service URL.
-5. Open the Render service URL for testing in normal browsers, Safari, and Incognito. Same-origin cookies are used for authentication.
-
-### Optional Vercel preview
-
-1. Import the repository into Vercel and set `VITE_API_URL` to the Render API origin.
-2. Vercel is suitable for a frontend preview, but the Render same-origin URL is recommended for authentication testing in Safari and Incognito.
+3. The Node server serves the frontend for direct Render access and exposes the API for the Vercel proxy.
+4. Set `MONGO_URI`, `JWT_SECRET`, and optional Redis/SMTP variables in Render Environment. `CLIENT_URL` and `CORS_ORIGINS` include the production origins.
 
 Add the Render service’s outbound access in MongoDB Atlas Network Access. For development, `0.0.0.0/0` permits all IP addresses; production deployments should restrict access where possible. Confirm the backend with `/api/health`; a healthy response is `{ "ok": true, "service": "DonorDash API" }`.
 
@@ -161,7 +161,7 @@ After deployment, test registration, profile saving, donor matching, live notifi
 
 - Passwords are hashed with bcrypt.
 - JWTs use HTTP-only cookies.
-- CORS is restricted to `CLIENT_URL`.
+- CORS is restricted to the configured `CLIENT_URL` and `CORS_ORIGINS` allowlist.
 - Helmet, rate limiting, JSON size limits, and Zod validation protect the API surface.
 - Request ownership checks prevent users from viewing or changing another user’s request.
 - Donor contact details are not exposed before the donor accepts.

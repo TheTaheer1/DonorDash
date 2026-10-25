@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiOrigin = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? window.location.origin : 'http://localhost:5000');
+const apiOrigin = import.meta.env.PROD ? window.location.origin : (import.meta.env.VITE_API_URL || 'http://localhost:5000');
 const client = axios.create({ baseURL: apiOrigin, withCredentials: true, headers: { 'Content-Type': 'application/json' } });
 const request = async (path, options = {}) => (await client({ url: path, ...options })).data;
 export const apiErrorMessage = error => error?.response?.data?.message || (error?.request ? 'The server could not be reached. Check that the API is running.' : 'Something went wrong. Please try again.');
