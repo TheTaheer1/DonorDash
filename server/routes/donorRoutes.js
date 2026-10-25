@@ -9,12 +9,12 @@ import { createNotification } from '../services/notificationService.js';
 
 export function createDonorRoutes(io) {
 const donorRoutes = Router();
-const visibleProfile = profile => profile ? { ...profile.toObject(), isAvailable: Boolean(profile.isAvailable && profile.healthEligible), ...donationEligibility(profile) } : null;
+const visibleProfile = profile => { if (!profile) return null; const eligibility = donationEligibility(profile); return { ...profile.toObject(), isAvailable: Boolean(profile.healthEligible && (profile.isAvailable || (profile.lastDonatedAt && eligibility.eligible))), ...eligibility }; };
 donorRoutes.put('/me', auth, asyncRoute(async (req, res) => {
   const data = profileSchema.parse(req.body);
   const profile = await DonorProfile.findOneAndUpdate({ user: req.user._id }, { user: req.user._id, ...data }, { new: true, upsert: true, runValidators: true }).populate('user', 'name email phone');
   await clearDonorMatchCache();
-  if (profile.isAvailable && profile.healthEligible && donationEligibility(profile).eligible) {
+  if ((profile.isAvailable || (profile.lastDonatedAt && donationEligibility(profile).eligible)) && profile.healthEligible && donationEligibility(profile).eligible) {
     const compatibleGroups = Object.entries(canReceiveFrom).filter(([, donors]) => donors.includes(profile.bloodGroup)).map(([group]) => group);
     const escapedCity = profile.city.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const escapedState = profile.state.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

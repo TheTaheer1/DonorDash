@@ -18,6 +18,6 @@ export async function findEligibleDonors({ bloodGroup, city, state, excludeUserI
   const escapedState = state.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const requester = excludeUserId ? await User.findById(excludeUserId).select('blockedUsers').lean() : null;
   const excludedUsers = [excludeUserId, ...(requester?.blockedUsers || [])].filter(Boolean);
-  const donors = await DonorProfile.find({ isAvailable: true, healthEligible: true, city: new RegExp(`^${escapedCity}$`, 'i'), state: new RegExp(`^${escapedState}$`, 'i'), bloodGroup: { $in: canReceiveFrom[bloodGroup] }, ...(excludedUsers.length ? { user: { $nin: excludedUsers } } : {}) }).populate('user', 'name email phone').lean();
-  return donors.filter(d => age(d.dob) >= 18 && age(d.dob) <= 65 && donationGapSatisfied(d)).sort((a, b) => new Date(a.lastDonatedAt || 0) - new Date(b.lastDonatedAt || 0));
+  const donors = await DonorProfile.find({ $or: [{ isAvailable: true }, { lastDonatedAt: { $ne: null } }], healthEligible: true, city: new RegExp(`^${escapedCity}$`, 'i'), state: new RegExp(`^${escapedState}$`, 'i'), bloodGroup: { $in: canReceiveFrom[bloodGroup] }, ...(excludedUsers.length ? { user: { $nin: excludedUsers } } : {}) }).populate('user', 'name email phone').lean();
+  return donors.filter(d => age(d.dob) >= 18 && age(d.dob) <= 65 && (d.isAvailable || donationGapSatisfied(d))).filter(donationGapSatisfied).sort((a, b) => new Date(a.lastDonatedAt || 0) - new Date(b.lastDonatedAt || 0));
 }
