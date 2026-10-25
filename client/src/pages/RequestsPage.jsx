@@ -6,7 +6,7 @@ import { Icon } from '../components/Icon';
 import { PageTitle } from '../components/PageTitle';
 
 const displayStatus = request => ['OPEN', 'PARTIALLY_FILLED'].includes(request.status) && new Date(request.deadline) <= new Date() ? 'EXPIRED' : request.status;
-const responseUnits = response => { const units = response.unitsVerified || (['ACCEPTED', 'ARRIVED', 'DONATED'].includes(response.status) ? 1 : 0); if (!units) return ''; return `(${units} ${units === 1 ? 'unit' : 'units'} ${response.status === 'VERIFIED' ? 'verified' : 'committed'})`; };
+const responseUnits = response => { const units = response.unitsVerified || response.unitsCommitted || (['ACCEPTED', 'ARRIVED', 'DONATED'].includes(response.status) ? 1 : 0); if (!units) return ''; return `(${units} ${units === 1 ? 'unit' : 'units'} ${response.status === 'VERIFIED' ? 'verified' : 'committed'})`; };
 const donorSummary = request => { const verified = request.responses?.filter(response => response.status === 'VERIFIED').length || 0; const matched = request.matched?.length || 0; if (verified && ['OPEN', 'PARTIALLY_FILLED'].includes(request.status) && matched) return `${verified} verified donor${verified === 1 ? '' : 's'} · ${matched} eligible donor${matched === 1 ? '' : 's'}`; if (verified) return `${verified} verified donor${verified === 1 ? '' : 's'}`; return `${matched} eligible donor${matched === 1 ? '' : 's'}`; };
 
 export function RequestsPage({ requests, setPage, onReport, onBlock, onEdit, onDelete }) {
