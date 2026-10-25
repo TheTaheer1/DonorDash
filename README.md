@@ -108,7 +108,6 @@ npm run build     # production frontend build
 npm run preview   # preview the frontend build
 ```
 
-DonorDash is an API-first application: MongoDB and the backend are required for real authentication, request creation, donor matching, notifications, and permanent data storage. The browser may retain limited presentation state in `localStorage` between page loads, but this is not a demo mode and cannot replace the backend. The project includes no seed script or preloaded demo records; users and requests are created through the normal registration and application workflows.
 
 ## Environment variables
 
