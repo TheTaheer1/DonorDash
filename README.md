@@ -106,10 +106,9 @@ Useful commands:
 npm run server    # backend only
 npm run build     # production frontend build
 npm run preview   # preview the frontend build
-npm run seed      # optional local demo seed data
 ```
 
-If MongoDB is unavailable, the frontend can use its local demo fallback, but real authentication, matching, notifications, and persistence require the API and database.
+If MongoDB is unavailable, the frontend can use its local demo fallback, but real authentication, matching, notifications, and persistence require the API and database. No seed script or demo records are included; data is created through normal registration and request workflows.
 
 ## Environment variables
 
