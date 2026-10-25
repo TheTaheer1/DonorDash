@@ -2,11 +2,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": "client/dist",
   "rewrites": [
-    { "source": "/api/socket.io", "destination": "https://donordash-api.onrender.com/socket.io" },
-    { "source": "/api/socket.io/:path*", "destination": "https://donordash-api.onrender.com/socket.io/:path*" },
     { "source": "/api/:path*", "destination": "https://donordash-api.onrender.com/api/:path*" },
-    { "source": "/socket.io", "destination": "https://donordash-api.onrender.com/socket.io" },
-    { "source": "/socket.io/:path*", "destination": "https://donordash-api.onrender.com/socket.io/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

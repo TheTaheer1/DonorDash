@@ -142,7 +142,7 @@ Production startup fails if `MONGO_URI`, `CLIENT_URL`, or a sufficiently long `J
 ### Vercel production frontend
 
 1. Import the repository into Vercel using the included `vercel.json` configuration.
-2. Vercel serves the React frontend and proxies `/api/*` and `/socket.io/*` to Render.
+2. Vercel serves the React frontend and proxies `/api/*` to Render. Socket.IO connects directly to Render using a short-lived socket token obtained through the Vercel API proxy.
 3. No `VITE_API_URL` value is required for production; the frontend uses its own Vercel origin.
 4. Open the Vercel URL for testing in Chrome, Safari, and Incognito.
 

@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === 'production') app.set('trust proxy', 1);
 const httpServer = createServer(app);
 const corsOrigin = (origin, callback) => callback(null, !origin || config.corsOrigins.includes(origin));
 const io = new Server(httpServer, { cors: { origin: corsOrigin, credentials: true } });
-io.use((socket, next) => { try { const token = socket.handshake.headers.cookie?.match(/(?:^|;\s*)dd_token=([^;]+)/)?.[1]; if (token) socket.userId = jwt.verify(token, config.jwtSecret).sub; } catch {} next(); });
+io.use((socket, next) => { try { const cookieToken = socket.handshake.headers.cookie?.match(/(?:^|;\s*)dd_token=([^;]+)/)?.[1]; const token = socket.handshake.auth?.token || cookieToken; if (token) { const payload = jwt.verify(token, config.jwtSecret); socket.userId = payload.sub; } } catch {} next(); });
 io.on('connection', socket => { if (socket.userId) socket.join(`user:${socket.userId}`); socket.emit('server:ready', { service: 'DonorDash' }); });
 
 app.use(helmet());
