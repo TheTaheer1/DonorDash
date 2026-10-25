@@ -108,7 +108,7 @@ npm run build     # production frontend build
 npm run preview   # preview the frontend build
 ```
 
-If MongoDB is unavailable, the frontend can use its local demo fallback, but real authentication, matching, notifications, and persistence require the API and database. No seed script or demo records are included; data is created through normal registration and request workflows.
+The frontend may retain limited UI state in browser `localStorage`, but real authentication, matching, notifications, and persistence require the API and database. No seed script or demo records are included; data is created through normal registration and request workflows.
 
 ## Environment variables
 
