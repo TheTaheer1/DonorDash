@@ -10,7 +10,7 @@ import cron from 'node-cron';
 import { config } from './config.js';
 import { connectDatabase } from './config/database.js';
 import { connectRedis } from './config/redis.js';
-import { BloodRequest } from './models/index.js';
+import { BloodRequest, DonorProfile, Notification } from './models/index.js';
 import { authRoutes } from './routes/authRoutes.js';
 import { donorRoutes } from './routes/donorRoutes.js';
 import { notificationRoutes } from './routes/notificationRoutes.js';
@@ -20,6 +20,7 @@ import { createRequestRoutes } from './routes/requestRoutes.js';
 import { dashboardRoutes } from './routes/dashboardRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { createNotification } from './services/notificationService.js';
+import { donationEligibility } from './logic.js';
 
 const app = express();
 app.disable('x-powered-by');
@@ -46,5 +47,7 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use(errorHandler);
 
 cron.schedule('*/10 * * * *', async () => { try { const expired = await BloodRequest.find({ deadline: { $lt: new Date() }, status: { $in: ['OPEN', 'PARTIALLY_FILLED'] } }).select('_id requester bloodGroup hospital matchedDonors').lean(); if (!expired.length) return; await BloodRequest.updateMany({ _id: { $in: expired.map(request => request._id) } }, { status: 'EXPIRED' }); for (const request of expired) { await createNotification(io, { user: request.requester, type: 'EXPIRED', title: 'Request expired', message: 'Your blood request passed its needed-by time without being fulfilled.', request: request._id }); for (const donorProfileId of request.matchedDonors || []) { const donor = await DonorProfile.findById(donorProfileId).select('user').lean(); if (donor) await createNotification(io, { user: donor.user, type: 'EXPIRED', title: 'Blood request expired', message: `The ${request.bloodGroup} request at ${request.hospital} has expired.`, request: request._id }); } } } catch (error) { console.error('Request expiry job failed:', error.message); } });
+
+cron.schedule('0 * * * *', async () => { try { const donors = await DonorProfile.find({ lastDonatedAt: { $ne: null } }).select('user gender lastDonatedAt').lean(); for (const donor of donors) { const eligibility = donationEligibility(donor); if (!eligibility.eligible) continue; const alreadyNotified = await Notification.exists({ user: donor.user, type: 'SYSTEM', title: 'You are eligible to donate again', createdAt: { $gte: new Date(eligibility.nextEligibleAt) } }); if (!alreadyNotified) await createNotification(io, { user: donor.user, type: 'SYSTEM', title: 'You are eligible to donate again', message: 'Your donation waiting period has ended. You can now be matched with compatible blood requests.', }); } } catch (error) { console.error('Donation eligibility notification job failed:', error.message); } });
 
 connectDatabase().then(connectRedis).then(() => httpServer.listen(config.port, () => console.log(`DonorDash API running on http://localhost:${config.port}`))).catch(error => { console.error('MongoDB connection failed:', error.message); console.error('Start MongoDB or set MONGO_URI before using the API.'); process.exitCode = 1; });
