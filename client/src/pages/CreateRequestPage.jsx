@@ -5,8 +5,9 @@ import { PageTitle } from '../components/PageTitle';
 import { compatibility, groups } from '../features/requests/constants';
 
 const nextHour = () => { const date = new Date(Date.now() + 60 * 60 * 1000); date.setMinutes(date.getMinutes() - date.getTimezoneOffset()); return date.toISOString().slice(0, 16); };
+const localDateTime = value => { const date = new Date(value); date.setMinutes(date.getMinutes() - date.getTimezoneOffset()); return date.toISOString().slice(0, 16); };
 export function CreateRequestPage({ onCreate, onUpdate, profile, initialRequest }) {
-  const [form, setForm] = useState(() => initialRequest ? { group: initialRequest.group, units: initialRequest.units, hospital: initialRequest.hospital, city: initialRequest.city, state: initialRequest.state || '', deadline: new Date(initialRequest.deadline).toISOString().slice(0, 16) } : { group: 'O-', units: 1, hospital: '', city: profile.city, state: profile.state || '', deadline: nextHour() });
+  const [form, setForm] = useState(() => initialRequest ? { group: initialRequest.group, units: initialRequest.units, hospital: initialRequest.hospital, city: initialRequest.city, state: initialRequest.state || '', deadline: localDateTime(initialRequest.deadline) } : { group: 'O-', units: 1, hospital: '', city: profile.city, state: profile.state || '', deadline: nextHour() });
   const [error, setError] = useState('');
   const update = event => setForm(current => ({ ...current, [event.target.name]: event.target.value }));
   const submit = event => { event.preventDefault(); if (form.hospital.trim().length < 2) return setError('Please add a hospital name with at least 2 characters.'); if (form.city.trim().length < 2) return setError('Please add a city with at least 2 characters.'); if (form.state.trim().length < 2) return setError('Please add a state with at least 2 characters.'); if (!form.deadline || new Date(form.deadline) <= new Date()) return setError('Needed-by time must be in the future.'); setError(''); (initialRequest ? onUpdate : onCreate)({ ...form, units: Number(form.units) }); };

@@ -3,6 +3,7 @@ import axios from 'axios';
 const apiOrigin = import.meta.env.PROD ? window.location.origin : (import.meta.env.VITE_API_URL || 'http://localhost:5000');
 const client = axios.create({ baseURL: apiOrigin, withCredentials: true, headers: { 'Content-Type': 'application/json' } });
 const request = async (path, options = {}) => (await client({ url: path, ...options })).data;
+const normalizeDeadline = value => value && !/([zZ]|[+-]\d{2}:\d{2})$/.test(value) ? new Date(value).toISOString() : value;
 export const apiErrorMessage = error => error?.response?.data?.message || (error?.request ? 'The server could not be reached. Check that the API is running.' : 'Something went wrong. Please try again.');
 export const api = {
   me: () => request('/api/auth/me'),
@@ -20,9 +21,9 @@ export const api = {
   donorMatches: () => request('/api/requests/matches'),
   requestResponses: () => request('/api/requests/responses'),
   cancelRequest: id => request(`/api/requests/${id}/cancel`, { method: 'POST' }),
-  updateRequest: (id, form) => request(`/api/requests/${id}`, { method: 'PUT', data: { bloodGroup: form.group, unitsNeeded: form.units, hospital: form.hospital, city: form.city, state: form.state, deadline: form.deadline } }),
+  updateRequest: (id, form) => request(`/api/requests/${id}`, { method: 'PUT', data: { bloodGroup: form.group, unitsNeeded: form.units, hospital: form.hospital, city: form.city, state: form.state, deadline: normalizeDeadline(form.deadline) } }),
   deleteRequest: id => request(`/api/requests/${id}`, { method: 'DELETE' }),
-  createRequest: form => request('/api/requests', { method: 'POST', data: { bloodGroup: form.group, unitsNeeded: form.units, hospital: form.hospital, city: form.city, state: form.state, deadline: form.deadline } }),
+  createRequest: form => request('/api/requests', { method: 'POST', data: { bloodGroup: form.group, unitsNeeded: form.units, hospital: form.hospital, city: form.city, state: form.state, deadline: normalizeDeadline(form.deadline) } }),
   hospitals: params => request('/api/hospitals', { params }),
   respond: (id, status) => request(`/api/requests/${id}/respond`, { method: 'POST', data: { status: status === 'accept' ? 'ACCEPTED' : 'DECLINED' } }),
   donationStatus: (id, status, units) => request(`/api/requests/${id}/donation-status`, { method: 'PATCH', data: { status, units } }),
