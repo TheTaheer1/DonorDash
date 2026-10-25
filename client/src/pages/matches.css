@@ -1,0 +1,7 @@
+.matches-list { margin-left: 5.3%; margin-right: 5.3%; padding-bottom: 45px; }
+.match-summary { display: flex; gap: 24px; color: #777; font-size: 11px; }
+.contact-reveal { display: grid; gap: 5px; margin-top: 18px; padding: 13px; background: #eef8f1; border-radius: 9px; color: #287851; font-size: 11px; }
+.contact-reveal a { color: #287851; font-weight: 700; }
+.contact-reveal small { color: #708b79; line-height: 1.4; }
+.donor-actions { justify-content: flex-start; margin-top: 18px; }
+@media (max-width: 650px) { .matches-list { margin-left: 20px; margin-right: 20px; } .match-summary { display: grid; gap: 7px; } }

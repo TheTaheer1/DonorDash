@@ -17,6 +17,7 @@ export const api = {
   profile: () => request('/api/donors/me'),
   saveProfile: profile => request('/api/donors/me', { method: 'PUT', data: { bloodGroup: profile.group, gender: profile.gender, dob: profile.dob, city: profile.city, state: profile.state, lastDonatedAt: profile.last || null, isAvailable: profile.available, healthEligible: profile.healthEligible } }),
   requests: (params = {}) => request('/api/requests/mine', { params }),
+  donorMatches: () => request('/api/requests/matches'),
   requestResponses: () => request('/api/requests/responses'),
   cancelRequest: id => request(`/api/requests/${id}/cancel`, { method: 'POST' }),
   updateRequest: (id, form) => request(`/api/requests/${id}`, { method: 'PUT', data: { bloodGroup: form.group, unitsNeeded: form.units, hospital: form.hospital, city: form.city, state: form.state, deadline: form.deadline } }),
@@ -24,6 +25,8 @@ export const api = {
   createRequest: form => request('/api/requests', { method: 'POST', data: { bloodGroup: form.group, unitsNeeded: form.units, hospital: form.hospital, city: form.city, state: form.state, deadline: form.deadline } }),
   hospitals: params => request('/api/hospitals', { params }),
   respond: (id, status) => request(`/api/requests/${id}/respond`, { method: 'POST', data: { status: status === 'accept' ? 'ACCEPTED' : 'DECLINED' } }),
+  donationStatus: (id, status, units) => request(`/api/requests/${id}/donation-status`, { method: 'PATCH', data: { status, units } }),
+  rematch: id => request(`/api/requests/${id}/rematch`, { method: 'POST' }),
   notifications: () => request('/api/notifications/mine'),
   markNotificationRead: id => request(`/api/notifications/${id}/read`, { method: 'PATCH' }),
   markAllNotificationsRead: () => request('/api/notifications/read-all', { method: 'POST' })
