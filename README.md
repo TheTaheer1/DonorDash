@@ -45,7 +45,7 @@ Donors receive private notifications and choose whether to help. Contact details
 - Database: MongoDB with Mongoose; MongoDB Atlas for production.
 - Cache: Redis, optional in development and used by the deployed backend when configured.
 - Authentication: JWT stored in an HTTP-only cookie and bcrypt password hashing.
-- Deployment: Vercel serves the production frontend and proxies API/Socket.IO traffic to the Render backend.
+- Deployment: Vercel serves the production frontend and proxies REST API traffic to Render; Socket.IO connects directly from the browser to the Render backend.
 
 ## Architecture
 
@@ -120,7 +120,7 @@ Copy `.env.example` to `.env`. Never commit `.env` or real credentials.
 | `MONGO_URI` | Yes | MongoDB connection string. |
 | `JWT_SECRET` | Yes | Random secret of at least 32 characters. |
 | `CLIENT_URL` | Yes | Exact frontend origin used for CORS and cookies. |
-| `VITE_API_URL` | Frontend production | Backend origin, without a trailing slash. |
+| `VITE_API_URL` | Local frontend | Local backend origin, without a trailing slash; production uses the Vercel origin for REST and Render directly for Socket.IO. |
 | `REDIS_URL` | No | Redis connection URL for donor-match caching. |
 | `DONATION_GAP_MALE_DAYS` | No | Defaults to `90`. |
 | `DONATION_GAP_FEMALE_DAYS` | No | Defaults to `120`. |
