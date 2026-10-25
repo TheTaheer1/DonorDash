@@ -108,7 +108,7 @@ npm run build     # production frontend build
 npm run preview   # preview the frontend build
 ```
 
-The frontend may retain limited UI state in browser `localStorage`, but real authentication, matching, notifications, and persistence require the API and database. No seed script or demo records are included; data is created through normal registration and request workflows.
+DonorDash is an API-first application: MongoDB and the backend are required for real authentication, request creation, donor matching, notifications, and permanent data storage. The browser may retain limited presentation state in `localStorage` between page loads, but this is not a demo mode and cannot replace the backend. The project includes no seed script or preloaded demo records; users and requests are created through the normal registration and application workflows.
 
 ## Environment variables
 
