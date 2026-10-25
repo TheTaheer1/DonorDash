@@ -5,12 +5,12 @@ import { asyncRoute } from '../middleware/asyncRoute.js';
 
 export const dashboardRoutes = Router();
 dashboardRoutes.get('/summary', auth, asyncRoute(async (req, res) => {
-  const [activeDonors, responses, acceptedResponses, requestTotals] = await Promise.all([
+  const [activeDonors, responses, respondedResponses, requestTotals] = await Promise.all([
     DonorProfile.countDocuments({ isAvailable: true }),
     DonorResponse.countDocuments(),
-    DonorResponse.countDocuments({ status: 'ACCEPTED' }),
+    DonorResponse.countDocuments({ status: { $in: ['ACCEPTED', 'ARRIVED', 'DONATED', 'VERIFIED', 'DECLINED'] } }),
     BloodRequest.aggregate([{ $group: { _id: null, units: { $sum: '$unitsConfirmed' }, open: { $sum: { $cond: [{ $in: ['$status', ['OPEN', 'PARTIALLY_FILLED']] }, 1, 0] } } } }])
   ]);
   const totals = requestTotals[0] || { units: 0, open: 0 };
-  res.json({ activeDonors, responseRate: responses ? Math.round((acceptedResponses / responses) * 100) : 0, livesSupported: totals.units, openRequests: totals.open });
+  res.json({ activeDonors, responseRate: responses ? Math.round((respondedResponses / responses) * 100) : 0, livesSupported: totals.units, openRequests: totals.open });
 }));
