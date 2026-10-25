@@ -27,6 +27,7 @@ Donors receive private notifications and choose whether to help. Contact details
 - Age 18–65 and donation-gap eligibility checks.
 - Configurable donation gap: 90 days for male/other donors and 120 days for female donors.
 - Donor matching notifications through Socket.IO and the in-app notification bell.
+- Automatic backfill matching when a newly eligible donor joins or updates their profile while requests are still open.
 - Requester workflow for open, partially fulfilled, fulfilled, expired, and cancelled requests.
 - Multi-unit requests with hospital/requester verification of the actual donated quantity.
 - Automatic donor last-donation-date update after verified donation.

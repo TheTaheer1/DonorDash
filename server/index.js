@@ -14,7 +14,7 @@ import { connectDatabase } from './config/database.js';
 import { connectRedis } from './config/redis.js';
 import { BloodRequest, DonorProfile, Notification } from './models/index.js';
 import { authRoutes } from './routes/authRoutes.js';
-import { donorRoutes } from './routes/donorRoutes.js';
+import { createDonorRoutes } from './routes/donorRoutes.js';
 import { notificationRoutes } from './routes/notificationRoutes.js';
 import { safetyRoutes } from './routes/safetyRoutes.js';
 import { hospitalRoutes } from './routes/hospitalRoutes.js';
@@ -43,7 +43,7 @@ app.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 120, standardHeaders: true 
 
 app.get('/api/health', (req, res) => res.json({ ok: true, service: 'DonorDash API' }));
 app.use('/api/auth', authRoutes);
-app.use('/api/donors', donorRoutes);
+app.use('/api/donors', createDonorRoutes(io));
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/safety', safetyRoutes);
 app.use('/api/hospitals', hospitalRoutes);
