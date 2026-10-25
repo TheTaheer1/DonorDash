@@ -33,7 +33,7 @@ export function createRequestRoutes(io) {
         id: request._id,
         responseId: response._id,
         status: response.status,
-        requestStatus: request.status,
+        requestStatus: request.unitsConfirmed >= request.unitsNeeded ? 'FULFILLED' : request.status,
         bloodGroup: request.bloodGroup,
         unitsNeeded: request.unitsNeeded,
         unitsConfirmed: request.unitsConfirmed,
