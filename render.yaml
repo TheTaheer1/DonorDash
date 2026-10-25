@@ -2,6 +2,7 @@ services:
   - type: web
     name: donordash-api
     runtime: node
+    plan: free
     buildCommand: npm install
     startCommand: npm run server
     envVars:
