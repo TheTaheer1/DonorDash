@@ -9,7 +9,6 @@ export const api = {
   login: data => request('/api/auth/login', { method: 'POST', data }),
   requestPasswordReset: email => request('/api/auth/password-reset/request', { method: 'POST', data: { email } }),
   completePasswordReset: data => request('/api/auth/password-reset/complete', { method: 'POST', data }),
-  demoLogin: () => request('/api/auth/demo', { method: 'POST' }),
   logout: () => request('/api/auth/logout', { method: 'POST' }),
   updateMe: data => request('/api/auth/me', { method: 'PUT', data }),
   deleteAccount: password => request('/api/auth/me', { method: 'DELETE', data: { password } }),
