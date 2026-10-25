@@ -13,7 +13,7 @@ services:
       - key: JWT_SECRET
         sync: false
       - key: CLIENT_URL
-        value: https://donordash-api.onrender.com
+        value: https://donordash-blood-network.vercel.app
       - key: CORS_ORIGINS
         value: https://donordash-api.onrender.com,https://donordash-blood-network.vercel.app
       - key: REDIS_URL
