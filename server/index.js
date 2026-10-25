@@ -1,5 +1,7 @@
 import express from 'express';
 import { createServer } from 'node:http';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -23,6 +25,8 @@ import { createNotification } from './services/notificationService.js';
 import { donationEligibility } from './logic.js';
 
 const app = express();
+const projectRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const clientDist = path.join(projectRoot, 'client', 'dist');
 app.disable('x-powered-by');
 if (process.env.NODE_ENV === 'production') app.set('trust proxy', 1);
 const httpServer = createServer(app);
@@ -44,6 +48,8 @@ app.use('/api/safety', safetyRoutes);
 app.use('/api/hospitals', hospitalRoutes);
 app.use('/api/requests', createRequestRoutes(io));
 app.use('/api/dashboard', dashboardRoutes);
+app.use(express.static(clientDist));
+app.get(/^(?!\/api).*/, (req, res) => res.sendFile(path.join(clientDist, 'index.html')));
 app.use(errorHandler);
 
 cron.schedule('*/10 * * * *', async () => { try { const expired = await BloodRequest.find({ deadline: { $lt: new Date() }, status: { $in: ['OPEN', 'PARTIALLY_FILLED'] } }).select('_id requester bloodGroup hospital matchedDonors').lean(); if (!expired.length) return; await BloodRequest.updateMany({ _id: { $in: expired.map(request => request._id) } }, { status: 'EXPIRED' }); for (const request of expired) { await createNotification(io, { user: request.requester, type: 'EXPIRED', title: 'Request expired', message: 'Your blood request passed its needed-by time without being fulfilled.', request: request._id }); for (const donorProfileId of request.matchedDonors || []) { const donor = await DonorProfile.findById(donorProfileId).select('user').lean(); if (donor) await createNotification(io, { user: donor.user, type: 'EXPIRED', title: 'Blood request expired', message: `The ${request.bloodGroup} request at ${request.hospital} has expired.`, request: request._id }); } } } catch (error) { console.error('Request expiry job failed:', error.message); } });
