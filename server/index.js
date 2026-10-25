@@ -30,12 +30,13 @@ const clientDist = path.join(projectRoot, 'client', 'dist');
 app.disable('x-powered-by');
 if (process.env.NODE_ENV === 'production') app.set('trust proxy', 1);
 const httpServer = createServer(app);
-const io = new Server(httpServer, { cors: { origin: config.clientUrl, credentials: true } });
+const corsOrigin = (origin, callback) => callback(null, !origin || config.corsOrigins.includes(origin));
+const io = new Server(httpServer, { cors: { origin: corsOrigin, credentials: true } });
 io.use((socket, next) => { try { const token = socket.handshake.headers.cookie?.match(/(?:^|;\s*)dd_token=([^;]+)/)?.[1]; if (token) socket.userId = jwt.verify(token, config.jwtSecret).sub; } catch {} next(); });
 io.on('connection', socket => { if (socket.userId) socket.join(`user:${socket.userId}`); socket.emit('server:ready', { service: 'DonorDash' }); });
 
 app.use(helmet());
-app.use(cors({ origin: config.clientUrl, credentials: true, methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], allowedHeaders: ['Content-Type'] }));
+app.use(cors({ origin: corsOrigin, credentials: true, methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], allowedHeaders: ['Content-Type'] }));
 app.use(express.json({ limit: '20kb' }));
 app.use(cookieParser());
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 120, standardHeaders: true }));
