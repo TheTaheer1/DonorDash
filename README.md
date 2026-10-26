@@ -2,6 +2,10 @@
 
 DonorDash is a blood-donation coordination platform that connects blood requesters with eligible local donors while protecting contact information until a donor accepts a request.
 
+## Demo video
+
+[Watch the DonorDash demo recording](https://drive.google.com/file/d/1b3OEv2-9HcZ2Tbon05Zk_b6gCc_f5vq1/view?usp=sharing)
+
 ## Problem statement
 
 During urgent blood shortages, requesters often depend on scattered phone calls, social-media posts, and unverified donor lists. This makes it difficult to find compatible donors quickly, track multiple units, and coordinate safely.
@@ -139,10 +143,6 @@ Production startup fails if `MONGO_URI`, `CLIENT_URL`, or a sufficiently long `J
 - Frontend: [donordash-blood-network.vercel.app](https://donordash-blood-network.vercel.app/)
 - Backend health check: [donordash-api.onrender.com/api/health](https://donordash-api.onrender.com/api/health)
 - Source repository: [github.com/TheTaheer1/DonorDash](https://github.com/TheTaheer1/DonorDash)
-
-### Demo video
-
-- [Watch the DonorDash demo recording](https://drive.google.com/file/d/1b3OEv2-9HcZ2Tbon05Zk_b6gCc_f5vq1/view?usp=sharing)
 
 ### Vercel production frontend
 
