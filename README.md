@@ -140,6 +140,10 @@ Production startup fails if `MONGO_URI`, `CLIENT_URL`, or a sufficiently long `J
 - Backend health check: [donordash-api.onrender.com/api/health](https://donordash-api.onrender.com/api/health)
 - Source repository: [github.com/TheTaheer1/DonorDash](https://github.com/TheTaheer1/DonorDash)
 
+### Demo video
+
+- [Watch the DonorDash demo recording](https://drive.google.com/file/d/1b3OEv2-9HcZ2Tbon05Zk_b6gCc_f5vq1/view?usp=sharing)
+
 ### Vercel production frontend
 
 1. Import the repository into Vercel using the included `vercel.json` configuration.
