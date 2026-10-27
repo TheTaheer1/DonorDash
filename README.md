@@ -4,7 +4,7 @@ DonorDash is a blood-donation coordination platform that connects blood requeste
 
 ## Demo video
 
-[Watch the DonorDash demo recording](https://drive.google.com/file/d/1b3OEv2-9HcZ2Tbon05Zk_b6gCc_f5vq1/view?usp=sharing)
+[Watch the DonorDash demo recording](https://drive.google.com/file/d/1PFdYeLlv7Gkq3fL5NCsA80Lk2CuzNAC7/view?usp=sharing)
 
 ## Problem statement
 
